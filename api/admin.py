@@ -5,10 +5,63 @@ from .models import (
     TypeJewerly,
     Supplier,
     Jewerly,
-    Category
+    Category,
+    User,
+    Employee,
+    Customer,
+    Order,
+    OrderDetail,
+    Invoice
 )
 
+
+class UserAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'username',
+        'password',
+        'email',
+        'is_active'
+    ]
+    readonly_fields = ['id','username']
 # Register your models here.
+
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'fullName',
+        'dateOfBirth',
+        'gender',
+        'address',
+        'phoneNumber',
+        'idNumber',
+        'account',
+        'salary',
+        'active',
+    ]
+    search_fields = [
+        'fullName',
+        'gender',
+        'active',
+    ]
+
+class CustomerAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'fullName',
+        'dateOfBirth',
+        'gender',
+        'address',
+        'phoneNumber',
+        'idNumber',
+        'account',
+        'active',
+    ]
+    search_fields = [
+        'fullName',
+        'gender',
+        'active',
+    ]
 
 class SupplierAdmin(admin.ModelAdmin):
     list_display = [
@@ -16,7 +69,8 @@ class SupplierAdmin(admin.ModelAdmin):
         'supplierName',
         'phoneNumber',
         'address',
-        'email'
+        'email',
+        'active',
     ]
     search_fields = [
         'id',
@@ -38,7 +92,7 @@ class JewerlyAdmin(admin.ModelAdmin):
     ]
     search_fields = [
         'jewerlyName',
-        # 'typeJewerly__typeName',
+        'typeJewerly__typeName',
         'supplier__supplierName',
     ]
     readonly_fields = ['img']
@@ -53,7 +107,54 @@ class CategoryAdmin(admin.ModelAdmin):
         'categoryName',
         'active'
     ]
-admin.site.register(TypeJewerly)
+
+class OrderAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'customer',
+        'orderDate',
+        'active',
+    ]
+    search_fields = [
+        'customer'
+    ]
+    readonly_fields = ['id','customer','orderDate']
+
+class OrderDetailAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'order',
+        'jewerly',
+        'unitPrice',
+        'quantity',
+        'amount',
+    ]
+
+class TypeJewerlyAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'typeName',
+        'category',
+        'active'
+    ]
+
+class InvoiceAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'invoiceDate',
+        'order',
+        'employee',
+        'total',
+        'active',
+    ]
+
+admin.site.register(TypeJewerly ,TypeJewerlyAdmin)
 admin.site.register(Supplier, SupplierAdmin)
 admin.site.register(Jewerly, JewerlyAdmin)
 admin.site.register(Category, CategoryAdmin)
+admin.site.register(User, UserAdmin)
+admin.site.register(Employee, EmployeeAdmin)
+admin.site.register(Customer, CustomerAdmin)
+admin.site.register(Order, OrderAdmin)
+admin.site.register(OrderDetail, OrderDetailAdmin)
+admin.site.register(Invoice, InvoiceAdmin)
